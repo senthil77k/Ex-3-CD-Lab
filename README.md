@@ -1,8 +1,7 @@
 # Ex-3-RECOGNITION-OF-A-VALID-ARITHMETIC-EXPRESSION-THAT-USES-OPERATOR-AND-USING-YACC
-# Date:
-# AIM
+# AIM :
 To write a yacc program to recognize a valid arithmetic expression that uses operator +,- ,* and /.
-# ALGORITHM
+# ALGORITHM :
 1.	Start the program.
 2.	Write a program in the vi editor and save it with .l extension.
 3.	In the lex program, write the translation rules for the operators =,+,-,*,/ and for the identifier.
@@ -11,7 +10,62 @@ To write a yacc program to recognize a valid arithmetic expression that uses ope
 6.	Compile the yacc program with yacc compiler to produce output file as y.tab.c. eg $ yacc –d arith_id.y
 7.	Compile these with the C compiler as gcc lex.yy.c y.tab.c
 8.	Enter an arithmetic expression as input and the tokens are identified as output.
-# PROGRAM
-# OUTPUT
-# RESULT
+# PROGRAM :
+# Program name: com.l.txt
+```
+%{ 
+/* This LEX program returns the tokens for the expression */ 
+#include "y.tab.h" 
+%} 
+%% 
+"=" {printf("\n Operator is EQUAL");} 
+"+" {printf("\n Operator is PLUS");} 
+"-" {printf("\n Operator is MINUS");} 
+"/" {printf("\n Operator is DIVISION");} 
+"*" {printf("\n Operator is MULTIPLICATION");} 
+[a-zA-Z]*[0-9]* { 
+printf("\n Identifier is %s",yytext); 
+return ID; } 
+. return yytext[0]; 
+\n return 0; 
+%% 
+int yywrap() 
+{ 
+return 1; 
+}
+```
+# Program Name: com.y.txt
+```
+%{ 
+#include <stdio.h> 
+/* This YACC program is for recognizing the Expression */ 
+%} 
+%token A ID 
+%% 
+statement: A'='E 
+| E { 
+printf("\n Valid arithmetic expression"); 
+$$=$1; 
+} 
+; 
+  E: E'+'ID 
+| E'-'ID 
+| E'*'ID 
+| E'/'ID 
+| ID 
+; 
+%% 
+extern FILE*yyin; 
+int main() { 
+do { 
+yyparse(); 
+}while(!feof(yyin)); } 
+yyerror(char*s) 
+{ 
+}
+```
+# OUTPUT :
+![Screenshot 2024-10-21 153228](https://github.com/user-attachments/assets/c65c193e-ecc1-4c07-b747-404cfcd50c18)
+
+# RESULT :
 A YACC program to recognize a valid arithmetic expression that uses operator +,-,* and / is executed successfully and the output is verified.
